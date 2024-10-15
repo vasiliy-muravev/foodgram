@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+from foodgram.constants import PAGE_PAGINATION_SIZE
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,4 +138,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': PAGE_PAGINATION_SIZE,
 }

@@ -3,7 +3,7 @@ import hashlib
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.filters import SearchFilter
@@ -25,7 +25,7 @@ from api.serializers import (
     SubscriptionSerializer,
     EasyRecipeSerializer
 )
-from api.filters import RecipeFilter
+from api.filters import RecipeFilter, IngredientFilter
 from api.permissions import IsAuthorOrRead
 
 from recipes.models import (
@@ -172,17 +172,18 @@ class IngredientViewSet(ModelViewSet):
     serializer_class = IngredientSerializer
     pagination_class = None
     http_method_names = ['get']
-    filter_backends = [SearchFilter, ]
-    search_fields = ['^name']
+    filter_backends = (DjangoFilterBackend,)
+    permission_classes = (AllowAny,)
+    filterset_class = IngredientFilter
 
 
 class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all().order_by('-id')
     pagination_class = LimitOffsetPagination
     permission_classes = [IsAuthorOrRead, ]
-    http_method_names = [
+    http_method_names = (
         'get', 'post', 'patch', 'delete'
-    ]
+    )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
@@ -194,8 +195,11 @@ class RecipeViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=True, methods=['get'],
-            url_path='get-link')
+    @action(
+        detail=True,
+        methods=['get'],
+        url_path='get-link'
+    )
     def get_link(self, request, pk):
         if self.get_object():
             url = request.build_absolute_uri()
