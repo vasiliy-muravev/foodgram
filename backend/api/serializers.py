@@ -8,8 +8,7 @@ from recipes.models import (
     Recipe,
     Favorite,
     ShoppingCart,
-    RecipeIngredient,
-    RecipeTag
+    RecipeIngredient
 )
 
 from users.models import Follow
