@@ -6,13 +6,13 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from django.http import HttpResponse
 
+from api.filters import RecipeFilter, IngredientFilter
+from api.permissions import IsAuthorOrRead
 from api.serializers import (
     UserCreateSerializer,
     UserSerializer,
@@ -20,14 +20,11 @@ from api.serializers import (
     PasswordChangeSerializer,
     TagSerializer,
     IngredientSerializer,
-    RecipeSerializer,
+    GetRecipeSerializer,
     CreateRecipeSerializer,
     SubscriptionSerializer,
-    EasyRecipeSerializer
+    ShortRecipeSerializer
 )
-from api.filters import RecipeFilter, IngredientFilter
-from api.permissions import IsAuthorOrRead
-
 from recipes.models import (
     Tag,
     Ingredient,
@@ -40,6 +37,8 @@ from users.models import Follow
 
 
 class UserViewSet(ModelViewSet):
+    """Вьюсет для пользователей."""
+
     queryset = User.objects.all()
     pagination_class = LimitOffsetPagination
 
@@ -161,6 +160,8 @@ class UserViewSet(ModelViewSet):
 
 
 class TagViewSet(ModelViewSet):
+    """Вьюсет для тегов."""
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
@@ -168,6 +169,8 @@ class TagViewSet(ModelViewSet):
 
 
 class IngredientViewSet(ModelViewSet):
+    """Вьюсет для ингредиентов."""
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
@@ -178,6 +181,8 @@ class IngredientViewSet(ModelViewSet):
 
 
 class RecipeViewSet(ModelViewSet):
+    """Вьюсет для рецептов."""
+
     queryset = Recipe.objects.all().order_by('-id')
     pagination_class = LimitOffsetPagination
     permission_classes = [IsAuthorOrRead, ]
@@ -188,9 +193,9 @@ class RecipeViewSet(ModelViewSet):
     filterset_class = RecipeFilter
 
     def get_serializer_class(self):
-        if self.request.method == ('POST' or 'PATCH'):
+        if self.request.method in ['POST', 'PATCH']:
             return CreateRecipeSerializer
-        return RecipeSerializer
+        return GetRecipeSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -228,7 +233,7 @@ class RecipeViewSet(ModelViewSet):
             ShoppingCart.objects.create(
                 user=user, recipe=recipe
             )
-            serializer = EasyRecipeSerializer(
+            serializer = ShortRecipeSerializer(
                 recipe
             )
             return Response(
@@ -300,7 +305,7 @@ class RecipeViewSet(ModelViewSet):
             Favorite.objects.create(
                 user=user, recipe=recipe
             )
-            serializer = EasyRecipeSerializer(
+            serializer = ShortRecipeSerializer(
                 recipe
             )
             return Response(

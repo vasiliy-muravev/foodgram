@@ -12,6 +12,7 @@ services:
       - ../backend/:/app/
       - static:/app/collected_static/
       - media:/app/media/
+    env_file: ../.env
   frontend:
     container_name: front-foodgram.local
     build: ../frontend
