@@ -12,3 +12,5 @@ python-decouple==3.8
 python-dotenv==1.0.1
 requests==2.32.3
 webcolors==24.8.0
+flake8==7.1.1
+flake8-isort==6.1.1
