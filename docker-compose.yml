@@ -16,7 +16,7 @@ services:
 
   backend:
     container_name: django-foodgram.local
-    image: vasiliymuravev/foodgram_backend
+    build: ./backend/
     env_file: .env
     depends_on:
       - db
@@ -26,8 +26,8 @@ services:
 
   frontend:
     container_name: front-foodgram.local
-    image: vasiliymuravev/foodgram_frontend
     env_file: .env
+    build: ./frontend/
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
@@ -37,7 +37,7 @@ services:
 
   gateway:
     container_name: foodgram-proxy.local
-    image: vasiliymuravev/foodgram_gateway
+    build: ./nginx/
     env_file: .env
     ports:
       - ${EXTERNAL_PORT}:80
