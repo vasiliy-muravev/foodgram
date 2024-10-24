@@ -1,15 +1,15 @@
+from api.mixins import CurrentRecipeMixin
 from django.contrib.auth import get_user_model
 from djoser.serializers import PasswordSerializer
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework import serializers
-
-from api.mixins import CurrentRecipeMixin
-from foodgram.constants import MIN_INGREDIENT_AMOUNT
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
+from rest_framework import serializers
 from users.models import Follow
+
+from foodgram.constants import MIN_INGREDIENT_AMOUNT
 
 User = get_user_model()
 
