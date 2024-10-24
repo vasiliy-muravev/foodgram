@@ -1,6 +1,8 @@
 from django_filters import ModelMultipleChoiceFilter
 from django_filters.rest_framework import FilterSet, filters
-from recipes.models import Ingredient, Recipe, Tag, User
+from rest_framework.filters import SearchFilter
+
+from recipes.models import Recipe, Tag, User
 
 
 class RecipeFilter(FilterSet):
@@ -35,9 +37,5 @@ class RecipeFilter(FilterSet):
         )
 
 
-class IngredientFilter(FilterSet):
-    name = filters.CharFilter(lookup_expr='istartswith')
-
-    class Meta:
-        model = Ingredient
-        fields = ('name',)
+class IngredientFilter(SearchFilter):
+    search_param = 'name'

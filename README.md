@@ -1,5 +1,9 @@
-### Описание проекта 
-Foodgram - сервис для обмена рецептами.
+# Foodgram - сервис для обмена рецептами.
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=plastic&logo=python&logoColor=092E20&labelColor=white
+)](https://www.python.org/) [![Django](https://img.shields.io/badge/django-822e0d?style=plastic&logo=django&logoColor=092E20&labelColor=white
+)](https://www.djangoproject.com/) [![Django REST Framework](https://img.shields.io/badge/-Django_REST_framework-DC143C?style=red
+)](https://www.django-rest-framework.org/)
 
 https://vasiliymuravev.serveirc.com/recipes - life demo website
 
@@ -10,14 +14,16 @@ https://vasiliymuravev.serveirc.com/recipes - life demo website
 - Подписываться на других пользователей
 - Создавать список покупок.
 
-
 Проект интересен тем что полностью настроено "непрерывное развертывание" CI/CD
-[https://github.com/vasiliy-muravev/foodgram/actions ](https://github.com/vasiliy-muravev/foodgram/actions) - описаны Actions для Workflow 
-В момент отправки кода в репозиторий (событие git push) запускается цепочка действий по деплою. Обычно эти рутинные действия выполняет разработчик, инструменты для автоматизации решают эту задачу.
-В этом файле описаны jobs [https://github.com/vasiliy-muravev/foodgram/blob/main/.github/workflows/main.yml](https://github.com/vasiliy-muravev/foodgram/blob/main/.github/workflows/main.yml)
+[https://github.com/vasiliy-muravev/foodgram/actions ](https://github.com/vasiliy-muravev/foodgram/actions) - описаны
+Actions для Workflow
+В момент отправки кода в репозиторий (событие git push) запускается цепочка действий по деплою. Обычно эти рутинные
+действия выполняет разработчик, инструменты для автоматизации решают эту задачу.
+В этом файле описаны
+jobs [https://github.com/vasiliy-muravev/foodgram/blob/main/.github/workflows/main.yml](https://github.com/vasiliy-muravev/foodgram/blob/main/.github/workflows/main.yml)
 В момент срабатывания события происходит следующее:
+
 1. Выполняются тесты по беку
-2. Выполняются тесты по фронту
 3. Пересобираются образы для контейнера
 4. Образы отправляются в хранилище dockerhub
 5. Бот заходит на сервер, отправляет команды вытянуть новые образы
@@ -26,7 +32,15 @@ https://vasiliymuravev.serveirc.com/recipes - life demo website
 8. Копирует статику в нужные папки
 9. Отправляет через телеграм бот сообщение об успешном деплое
 
-## Установка 
+### Стэк используемых технологий
+
+- Django
+- DjangoRestFramework
+- Docker
+- Nginx
+- Postgres
+
+### Установка
 
 1. Клонируйте репозиторий на свой компьютер:
 
@@ -36,21 +50,21 @@ https://vasiliymuravev.serveirc.com/recipes - life demo website
     ```bash
     cd foodgram
     ```
-2. Создайте файл .env и заполните его своими данными. Перечень данных указан в корневой директории проекта в файле .env.example.
-
+2. Создайте файл .env и заполните его своими данными. Перечень данных указан в корневой директории проекта в файле
+   .env.example.
 
 ### Создание Docker-образов
 
-1.  Замените username на ваш логин на DockerHub:
+1. Замените username на ваш логин на DockerHub:
 
-    ```bash
-    cd frontend
-    docker build -t username/foodgram_frontend .
-    cd ../backend
-    docker build -t username/foodgram_backend .
-    cd ../nginx
-    docker build -t username/foodgram_gateway . 
-    ```
+   ```bash
+   cd frontend
+   docker build -t username/foodgram_frontend .
+   cd ../backend
+   docker build -t username/foodgram_backend .
+   cd ../nginx
+   docker build -t username/foodgram_gateway . 
+   ```
 
 2. Загрузите образы на DockerHub:
 
@@ -128,7 +142,7 @@ https://vasiliymuravev.serveirc.com/recipes - life demo website
     ```bash
     sudo nginx -t
     ```
-    Если ответ в терминале такой, значит, ошибок нет:
+   Если ответ в терминале такой, значит, ошибок нет:
     ```bash
     nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
     nginx: configuration file /etc/nginx/nginx.conf test is successful
@@ -160,3 +174,7 @@ https://vasiliymuravev.serveirc.com/recipes - life demo website
     TELEGRAM_TO                    # id телеграм-аккаунта (можно узнать у @userinfobot, команда /start)
     TELEGRAM_TOKEN                 # токен бота (получить токен можно у @BotFather, /token, имя бота)
     ```
+
+### Автор проекта
+
+**Муравьев Василий** 
