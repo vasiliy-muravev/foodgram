@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import CharField
+
 from users.constants import MAX_LENGTH
 
 
@@ -37,7 +38,8 @@ class User(AbstractUser):
     password = models.CharField(
         max_length=MAX_LENGTH,
         blank=False,
-        verbose_name='Пароль'
+        verbose_name='Пароль',
+        editable=False
     )
     avatar = models.ImageField(
         upload_to='avatars/',
@@ -56,10 +58,16 @@ class User(AbstractUser):
 
 class Follow(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='follower'
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        verbose_name='Пользователь'
     )
     following = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='following'
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        verbose_name='Подписан'
     )
 
     class Meta:
@@ -69,3 +77,5 @@ class Follow(models.Model):
                 name='unique_user_following'
             )
         ]
+        verbose_name = 'Подписчик'
+        verbose_name_plural = 'подписчики'

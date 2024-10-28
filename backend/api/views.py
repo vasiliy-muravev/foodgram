@@ -1,15 +1,17 @@
 import hashlib
 
+from django.db.models import Sum
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+
 from api.filters import IngredientFilter, RecipeFilter
+from api.pagination import LimitPagination
 from api.permissions import IsAuthorOrRead
 from api.serializers import (CreateRecipeSerializer, FavoriteSerializer,
                              GetRecipeSerializer, IngredientSerializer,
                              PasswordChangeSerializer, ShoppingCartSerializer,
                              SubscriptionSerializer, TagSerializer, User,
                              UserCreateSerializer, UserSerializer)
-from django.db.models import Sum
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as BaseUserViewSet
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
@@ -174,7 +176,7 @@ class RecipeViewSet(ModelViewSet):
     """Вьюсет для рецептов."""
 
     queryset = Recipe.objects.all().order_by('-id')
-    pagination_class = LimitOffsetPagination
+    pagination_class = LimitPagination
     permission_classes = [IsAuthorOrRead, ]
     http_method_names = (
         'get', 'post', 'patch', 'delete'

@@ -1,5 +1,6 @@
-from api.mixins import CurrentRecipeMixin
 from django.contrib.auth import get_user_model
+
+from api.mixins import CurrentRecipeMixin
 from djoser.serializers import PasswordSerializer
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
@@ -49,7 +50,9 @@ class UserSerializer(BaseUserSerializer):
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
-            return request.user.follower.filter(user=obj).exists()
+            return Follow.objects.filter(
+                user=request.user, following=obj.id
+            ).exists()
         return False
 
 
@@ -290,27 +293,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer, CurrentRecipeMixin):
         recipe.tags.set(tags)
         return recipe
 
-    # def delete(self, obj, validated_data):
-    #
-    #     if not self.get_current_recipe(obj, ShoppingCart):
-    #         #
-    #     # user = self.context['request'].user
-    #     #
-    #     # if not ShoppingCart.objects.filter(
-    #     #         user=user, recipe=instance
-    #     # ).exists():
-    #         raise serializers.ValidationError(
-    #             'Этого рецепта нет в списке покупок'
-    #         )
-    #     else:
-    #         obj.delete()
-    #     return HttpResponse(status=204)
-
-    # return Response(
-    #     {'errors': 'Этого рецепта нет в списке покупок'},
-    #     status=status.HTTP_400_BAD_REQUEST
-    # )
-
     def to_representation(self, instance):
         serializer = GetRecipeSerializer(instance)
         return serializer.data
@@ -392,7 +374,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             recipes = obj.following.recipes.all()
             recipes_limit = request.guery_params.get('recipes_limit')
             if recipes_limit:
-                recipes = obj.following.recipes.all()[:recipes_limit]
+                recipes = recipes[:recipes_limit]
             if recipes:
                 serializer = ShortRecipeSerializer(
                     recipes,

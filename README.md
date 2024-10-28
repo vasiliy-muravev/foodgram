@@ -5,7 +5,7 @@
 )](https://www.djangoproject.com/) [![Django REST Framework](https://img.shields.io/badge/-Django_REST_framework-DC143C?style=red
 )](https://www.django-rest-framework.org/)
 
-https://vasiliymuravev.serveirc.com/recipes - life demo website
+https://vasiliymuravev.serveirc.com/recipes - рабочая версия сайта
 
 Что умеет проект:
 
@@ -174,6 +174,13 @@ jobs [https://github.com/vasiliy-muravev/foodgram/blob/main/.github/workflows/ma
     TELEGRAM_TO                    # id телеграм-аккаунта (можно узнать у @userinfobot, команда /start)
     TELEGRAM_TOKEN                 # токен бота (получить токен можно у @BotFather, /token, имя бота)
     ```
+
+### Полезные команды
+```
+python -m flake8 .
+isort --resolve-all-configs .
+../postman_collection/clear_db.sh
+```
 
 ### Автор проекта
 
