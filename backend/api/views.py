@@ -3,6 +3,13 @@ import hashlib
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from djoser.views import UserViewSet as BaseUserViewSet
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import LimitPagination
@@ -12,15 +19,8 @@ from api.serializers import (CreateRecipeSerializer, FavoriteSerializer,
                              PasswordChangeSerializer, ShoppingCartSerializer,
                              SubscriptionSerializer, TagSerializer, User,
                              UserCreateSerializer, UserSerializer)
-from djoser.views import UserViewSet as BaseUserViewSet
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
-from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 from users.models import Follow
 
 
@@ -95,7 +95,8 @@ class UserViewSet(BaseUserViewSet):
         subs_list = user.follower.all()
         serializer = SubscriptionSerializer(
             self.paginate_queryset(subs_list),
-            many=True
+            many=True,
+            context={'request': request, 'user': request.user}
         )
         return self.get_paginated_response(serializer.data)
 
@@ -122,7 +123,10 @@ class UserViewSet(BaseUserViewSet):
         queryset = Follow.objects.create(
             user=user, following=following
         )
-        serializer = SubscriptionSerializer(queryset)
+        serializer = SubscriptionSerializer(
+            queryset,
+            context={'request': request, 'user': request.user}
+        )
         return Response(
             serializer.data,
             status=status.HTTP_201_CREATED

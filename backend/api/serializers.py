@@ -1,16 +1,15 @@
 from django.contrib.auth import get_user_model
-
-from api.mixins import CurrentRecipeMixin
 from djoser.serializers import PasswordSerializer
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
+from api.mixins import CurrentRecipeMixin
+from foodgram.constants import MIN_INGREDIENT_AMOUNT
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
-from rest_framework import serializers
 from users.models import Follow
-
-from foodgram.constants import MIN_INGREDIENT_AMOUNT
 
 User = get_user_model()
 
@@ -360,28 +359,18 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if request:
-            user = request.user
-            if user.is_authenticated:
-                return Follow.objects.filter(
-                    following=obj.following.id, user=user.id
-                ).exists()
-        return False
+        user = request.user
+        return Follow.objects.filter(
+            following=obj.following.id, user=user.id
+        ).exists()
 
     def get_recipes(self, obj):
         request = self.context.get('request')
-        if request:
-            recipes = obj.following.recipes.all()
-            recipes_limit = request.guery_params.get('recipes_limit')
-            if recipes_limit:
-                recipes = recipes[:recipes_limit]
-            if recipes:
-                serializer = ShortRecipeSerializer(
-                    recipes,
-                    many=True
-                )
-                return serializer.data
-        return []
+        limit = request.GET.get('recipes_limit')
+        recipes = obj.following.recipes.all()
+        if limit:
+            recipes = recipes[:int(limit)]
+        return ShortRecipeSerializer(recipes, many=True).data
 
     def get_recipes_count(self, obj):
         return obj.following.recipes.count()

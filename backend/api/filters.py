@@ -1,7 +1,8 @@
 from django_filters import ModelMultipleChoiceFilter
 from django_filters.rest_framework import FilterSet, filters
-from recipes.models import Recipe, Tag, User
 from rest_framework.filters import SearchFilter
+
+from recipes.models import Recipe, Tag, User
 
 
 class RecipeFilter(FilterSet):
