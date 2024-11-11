@@ -8,14 +8,14 @@ volumes:
 services:
   db:
     restart: on-failure
-    container_name: pgsql-foodgram.local
+    container_name: foodgram-pgsql.prod
     image: postgres:13
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    container_name: django-foodgram.local
+    container_name: foodgram-django.prod
     image: vasiliymuravev/foodgram_backend
     env_file: .env
     depends_on:
@@ -25,7 +25,7 @@ services:
       - media:/app/media/
 
   frontend:
-    container_name: front-foodgram.local
+    container_name: foodgram-front.prod
     image: vasiliymuravev/foodgram_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
@@ -36,7 +36,7 @@ services:
 
 
   gateway:
-    container_name: foodgram-proxy.local
+    container_name: foodgram-proxy.prod
     image: vasiliymuravev/foodgram_gateway
     env_file: .env
     ports:
