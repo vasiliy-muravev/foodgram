@@ -5,7 +5,7 @@
 )](https://www.djangoproject.com/) [![Django REST Framework](https://img.shields.io/badge/-Django_REST_framework-DC143C?style=red
 )](https://www.django-rest-framework.org/)
 
-https://vasiliymuravev.serveirc.com/recipes - рабочая версия сайта
+https://foodgram.vasiliymuravev.ru/recipes - демо версия проекта
 
 Что умеет проект:
 

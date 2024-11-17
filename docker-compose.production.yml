@@ -39,8 +39,6 @@ services:
     container_name: foodgram-proxy.prod
     image: vasiliymuravev/foodgram_gateway
     env_file: .env
-    ports:
-      - ${EXTERNAL_PORT}:80
     volumes:
       - static_volume:/staticfiles
       - media:/app/media
