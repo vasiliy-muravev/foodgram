@@ -146,7 +146,8 @@ jobs:
         # Передаём параметры для action appleboy/scp-action:
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
+          user: ${{ secrets.USER }}
+#          username: ${{ secrets.USER }}
           private_key: ${{ secrets.SSH_KEY }}
 #          key: ${{ secrets.SSH_KEY }}
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
@@ -156,7 +157,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
+          user: ${{ secrets.USER }}
+#          username: ${{ secrets.USER }}
           private_key: ${{ secrets.SSH_KEY }}
 #          key: ${{ secrets.SSH_KEY }}
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
