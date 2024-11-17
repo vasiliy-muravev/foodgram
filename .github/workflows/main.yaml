@@ -148,8 +148,8 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
 #          username: ${{ secrets.USER }}
-          private_key: ${{ secrets.SSH_KEY }}
-#          key: ${{ secrets.SSH_KEY }}
+#          private_key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docker-compose.production.yml"
           target: "foodgram"
@@ -159,8 +159,8 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
 #          username: ${{ secrets.USER }}
-          private_key: ${{ secrets.SSH_KEY }}
-#          key: ${{ secrets.SSH_KEY }}
+#          private_key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           # Параметр script передаёт в action appleboy/ssh-action команды,
           # которые нужно выполнить на сервере,
