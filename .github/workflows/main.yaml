@@ -149,8 +149,6 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-#          key: ${{ secrets.SSH_KEY }}
-#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docker-compose.production.yml"
           target: "foodgram"
       - name: Executing remote ssh commands to deploy
@@ -158,8 +156,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-#          key: ${{ secrets.SSH_KEY }}
-#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           # Параметр script передаёт в action appleboy/ssh-action команды,
